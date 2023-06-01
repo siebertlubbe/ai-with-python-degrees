@@ -107,11 +107,7 @@ def shortest_path(source, target):
         node = frontier.remove()
 
         if node.state == target:
-            while node.parent is not None:
-                path.append((node.action, node.state))
-                node = node.parent
-            path.reverse()
-            return path
+            return build_path_from_node(node)
         
         explored.add(node.state)
 
@@ -120,12 +116,7 @@ def shortest_path(source, target):
                 child = Node(state=state, parent=node, action=action)
 
                 if child.state == target:
-                    node = child
-                    while node.parent is not None:
-                        path.append((node.action, node.state))
-                        node = node.parent
-                    path.reverse()
-                    return path
+                    return build_path_from_node(child)
 
                 frontier.add(child)
 
@@ -154,6 +145,15 @@ def person_id_for_name(name):
         return None
     else:
         return person_ids[0]
+
+
+def build_path_from_node(node):
+    path = []
+    while node.parent is not None:
+        path.append((node.action, node.state))
+        node = node.parent
+    path.reverse()
+    return path
 
 
 def neighbors_for_person(person_id):
